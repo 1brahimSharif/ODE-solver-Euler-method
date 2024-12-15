@@ -11,7 +11,7 @@
       padding: 0;
       box-sizing: border-box;
     }
-
+/* */
     body {
       height: 100vh;
       font-family: 'Poppins', sans-serif;
@@ -157,8 +157,9 @@
   <div class="background"></div>
   
   <div class="container">
-    <h1>Euler's Method Solver</h1>
-    <form id="euler-form">
+    <h1>Euler's Method Solver</h1>  
+    <form id="euler-form">     
+      <!--taking inputs of eqn, initial values, stepsize and final x value for which y(x) is to be calculated*/ -->
       <label for="equation">Enter Differential Equation (dy/dx):</label>
       <input type="text" id="equation" placeholder="e.g., x + y, sqrt(1 - y^2)" required>
 
@@ -177,10 +178,15 @@
     <div class="results" id="results"></div>
     <canvas id="solution-graph"></canvas>
   </div>
-
+<!-- importing the 
+  1)math.js library to evaluate the equation which is input as a string by using the math.evaluate function
+  which takes the input x and y values and substitues the values in the equation for its evaluation
+  2)Chart.js library containing all the charts and graph which is used here for adding a line graph which plots the graph of y vs x values
+  for every step of the calculation-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
+    //this method is used to evaluate the expression of the ODE (string) by substituting the input x and y values 
     function evaluateFunction(equation, x, y) {
       try {
         return math.evaluate(equation, { x, y });
@@ -189,6 +195,9 @@
       }
     }
 
+    
+    /*this method stores the values of the answers generated after every step in an array,i.e. for an entire step showing values of x,y and f(x,y)
+    by calling the evaluateFunction() function in this method to solve and push the values to the respective arrays and return the values/answers if no errors*/
     function eulerMethod(equation, y0, xn, h) {
       const steps = [];
       const xValues = [];
@@ -210,7 +219,8 @@
 
       return { success: true, steps, xValues, yValues };
     }
-
+    
+/* this method is used to display the answers of each step i.e. the x,y and f(x,y) values in a table format*/
     function displayResults(result) {
       const resultsDiv = document.getElementById('results');
 
@@ -229,6 +239,10 @@
       resultsDiv.innerHTML = html;
     }
 
+    /*This function is used to plot the graph using the results of the evaluation of each step, using the Chart.js library 
+    which has charts and graphs built-in... thus utilizing the funtion to plot the line graphs, we provide the x and y values to this chart function
+    and assigning its type as 'line'.. 
+    and here i have made the graph in green color*/
     function plotGraph(xValues, yValues) {
       const ctx = document.getElementById('solution-graph').getContext('2d');
       new Chart(ctx, {
